@@ -2,16 +2,15 @@ import json
 import os
 import glob
 import torch
-import numpy as np
 
 from sklearn import model_selection
-from sklearn import metrics
-from sklearn.preprocessing import MultiLabelBinarizer
 
 import config
 import dataset
 import engine
 from model import SinhalaOCRModel
+
+from pprint import pprint
 
 
 def remove_duplicates(x):
@@ -102,26 +101,15 @@ def run_training():
             for i, pred in enumerate(vp):
                 valid_text_preds[i] += decode_predictions(pred)
         print('-----------')
-        """combined_1 = list(zip(test_targets_1, valid_text_preds[0]))
+        combined_1 = list(zip(test_targets_1, valid_text_preds[0]))
         combined_2 = list(zip(test_targets_2, valid_text_preds[1]))
         combined_3 = list(zip(test_targets_3, valid_text_preds[2]))
-        print(combined_1[:10])"""
+        pprint(combined_1[:5])
+        pprint(combined_2[:5])
+        pprint(combined_3[:5])
         
-        mb = MultiLabelBinarizer()
-        test_targets_1 = [remove_duplicates(c) for c in test_targets_1]
-        test_dup_rem_1 = mb.fit_transform(test_targets_1)
-        val_1 = mb.transform(valid_text_preds[0])
-        accuracy_1 = metrics.accuracy_score(test_dup_rem_1, val_1)
-        test_targets_2 = [remove_duplicates(c) for c in test_targets_2]
-        test_dup_rem_2 = mb.fit_transform(test_targets_2)
-        val_2 = mb.transform(valid_text_preds[1])
-        accuracy_2 = metrics.accuracy_score(test_dup_rem_2, val_2)
-        test_targets_3 = [remove_duplicates(c) for c in test_targets_3]
-        test_dup_rem_3 = mb.fit_transform(test_targets_3)
-        val_3 = mb.transform(valid_text_preds[2])
-        accuracy_3 = metrics.accuracy_score(test_dup_rem_3, val_3)
         print(
-            f"Epoch={epoch}, Train Loss={train_loss}, Test Loss={test_loss} Accuracy={(accuracy_1, accuracy_2, accuracy_3)}"
+            f"Epoch={epoch}, Train Loss={train_loss}, Test Loss={test_loss}"
         )
         scheduler.step(test_loss)
 
