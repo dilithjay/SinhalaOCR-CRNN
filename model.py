@@ -17,7 +17,7 @@ def criterion(preds, targets, target_lengths):
 
 
 class SinhalaOCRModel(nn.Module):
-    def __init__(self, num_l_chars=12, num_m_chars=54, num_u_chars=19):
+    def __init__(self, num_l_chars=13, num_m_chars=55, num_u_chars=20):
         super(SinhalaOCRModel, self).__init__()
         self.conv_1 = nn.Conv2d(3, 128, kernel_size=(3, 6), padding=(1, 1))
         self.pool_1 = nn.MaxPool2d(kernel_size=(2, 2))
@@ -50,11 +50,11 @@ class SinhalaOCRModel(nn.Module):
         x3 = x3.permute(1, 0, 2)
 
         if targets_1 is not None:
-            loss1 = criterion(x1, targets_1 + 1, lengths)
-            loss2 = criterion(x2, targets_2 + 1, lengths)
-            loss3 = criterion(x3, targets_3 + 1, lengths)
+            loss1 = criterion(x1, targets_1, lengths)
+            loss2 = criterion(x2, targets_2, lengths)
+            loss3 = criterion(x3, targets_3, lengths)
             if loss1 < 0:
-                print(f'\n{loss1}, {targets_1 + 1}')
+                print(f'\n{loss1}, {targets_1}')
             return (x1, x2, x3), loss1 + loss2 + loss3
 
         return  (x1, x2, x3), None
