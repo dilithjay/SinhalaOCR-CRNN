@@ -93,6 +93,9 @@ def run_training():
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, factor=0.8, patience=5, verbose=True
     )
+    
+    best_loss = 10 ** 5
+    
     for epoch in range(config.EPOCHS):
         train_loss = engine.train_fn(model, train_loader, optimizer)
         valid_preds, test_loss = engine.eval_fn(model, test_loader)
@@ -104,9 +107,16 @@ def run_training():
         combined_1 = list(zip(test_targets_1, valid_text_preds[0]))
         combined_2 = list(zip(test_targets_2, valid_text_preds[1]))
         combined_3 = list(zip(test_targets_3, valid_text_preds[2]))
+        print('Lower:')
         pprint(combined_1[:5])
+        print('Middle:')
         pprint(combined_2[:5])
+        print('Upper:')
         pprint(combined_3[:5])
+        
+        if test_loss < best_loss:
+            best_loss = test_loss
+            torch.save(model, config.MODEL_SAVE_PATH)
         
         print(
             f"Epoch={epoch}, Train Loss={train_loss}, Test Loss={test_loss}"
