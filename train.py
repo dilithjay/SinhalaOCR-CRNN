@@ -8,7 +8,7 @@ from sklearn import model_selection
 import config
 import dataset
 import engine
-from model import SinhalaOCRModel
+from model import ResNetRNNModel
 
 from pprint import pprint
 
@@ -86,7 +86,7 @@ def run_training():
         # collate_fn=collate_fn
     )
 
-    model = SinhalaOCRModel()
+    model = ResNetRNNModel()
     model.to(config.DEVICE)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
