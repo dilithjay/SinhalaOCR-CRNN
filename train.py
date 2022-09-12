@@ -119,7 +119,7 @@ def run_training():
             torch.save(model, config.MODEL_SAVE_PATH)
         
         print(
-            f"Epoch={epoch}, Train Loss={train_loss}, Test Loss={test_loss}"
+            f"Epoch={epoch}/{config.EPOCHS}, Train Loss={train_loss}, Test Loss={test_loss}"
         )
         scheduler.step(test_loss)
 
