@@ -21,7 +21,7 @@ class ResNetRNNModel(nn.Module):
         super(ResNetRNNModel, self).__init__()
         self.resnet = resnet50(weights=ResNet50_Weights.DEFAULT)
         self.resnet = torch.nn.Sequential(*(list(self.resnet.children())[:-2]))
-        self.linear_1 = nn.Linear(256, 64)
+        self.linear_1 = nn.Linear(512, 64)
         self.drop_1 = nn.Dropout(0.2)
         self.lstm_1 = nn.GRU(64, 32, bidirectional=True, num_layers=2, dropout=0.25, batch_first=True)
         self.lstm_2 = nn.GRU(64, 32, bidirectional=True, num_layers=2, dropout=0.25, batch_first=True)

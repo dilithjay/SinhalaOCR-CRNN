@@ -42,9 +42,13 @@ class ClassificationDataset:
         targets_3 = torch.concat([torch.tensor(targets_3, dtype=torch.long), torch.zeros([pad_len])])
 
         if self.resize is not None:
+            w, h = image.size
             image = image.resize(
-                (self.resize[1], self.resize[0]), resample=Image.BILINEAR
+                (int(self.resize[0] * w / h), self.resize[0]), resample=Image.BILINEAR
             )
+            new_image = Image.new(image.mode, (self.resize[1], self.resize[0]), (0, 0, 0))
+            new_image.paste(image)
+            image = new_image
 
         image = np.array(image)
         augmented = self.aug(image=image)
