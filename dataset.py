@@ -37,9 +37,9 @@ class ClassificationDataset:
         # print(f'=== {targets_1} {targets_2} {targets_3}')
         init_len = len(targets_1)
         pad_len = 20 - init_len
-        targets_1 = torch.concat([torch.tensor(targets_1, dtype=torch.long), torch.zeros([pad_len])])
-        targets_2 = torch.concat([torch.tensor(targets_2, dtype=torch.long), torch.zeros([pad_len])])
-        targets_3 = torch.concat([torch.tensor(targets_3, dtype=torch.long), torch.zeros([pad_len])])
+        targets_1 = torch.concat([torch.tensor(targets_1, dtype=torch.long), torch.ones([pad_len])])
+        targets_2 = torch.concat([torch.tensor(targets_2, dtype=torch.long), torch.ones([pad_len])])
+        targets_3 = torch.concat([torch.tensor(targets_3, dtype=torch.long), torch.ones([pad_len])])
 
         if self.resize is not None:
             w, h = image.size
